@@ -1,0 +1,18 @@
+.auth-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    to right,
+    #071739,
+    #0d1b4d
+  );
+}
+
+.auth-form {
+  width: 400px;
+  background: #08142f;
+  padding: 30px;
+  border-radius: 15px;
+}

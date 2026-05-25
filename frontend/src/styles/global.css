@@ -1,0 +1,112 @@
+body {
+  margin: 0;
+  background: #071739;
+  color: white;
+  font-family: Arial;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* LIGHT MODE */
+
+body.light {
+  background-color: #f4f7fb;
+  color: #000000 !important;
+  transition: 0.3s;
+}
+
+/* DARK MODE */
+
+body.dark {
+  background-color: #0f172a;
+  color: #ffffff !important;
+  transition: 0.3s;
+}
+
+/* LIGHT MODE TEXT */
+
+body.light h1,
+body.light h2,
+body.light h3,
+body.light h4,
+body.light h5,
+body.light h6,
+body.light p,
+body.light span,
+body.light label,
+body.light td,
+body.light th,
+body.light a,
+body.light li,
+body.light div {
+  color: #000000 !important;
+}
+
+/* DARK MODE TEXT */
+
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark h6,
+body.dark p,
+body.dark span,
+body.dark label,
+body.dark td,
+body.dark th,
+body.dark a,
+body.dark li,
+body.dark div {
+  color: #ffffff !important;
+}
+
+/* CARDS */
+
+body.dark .card,
+body.dark .table,
+body.dark .sidebar,
+body.dark .navbar {
+  background-color: #1e293b !important;
+  color: white !important;
+}
+
+body.light .card,
+body.light .table,
+body.light .sidebar,
+body.light .navbar {
+  background-color: white !important;
+  color: black !important;
+}
+
+/* INPUTS */
+
+body.light input,
+body.light select,
+body.light textarea {
+  background-color: white;
+  color: black;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background-color: #334155;
+  color: white;
+  border: 1px solid #475569;
+}
+
+/* TABLE */
+
+table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* BUTTON */
+
+button {
+  transition: 0.3s;
+}
