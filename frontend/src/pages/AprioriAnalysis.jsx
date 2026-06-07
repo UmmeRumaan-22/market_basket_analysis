@@ -1,77 +1,159 @@
 import { useState } from "react";
-
 import API from "../api/axios";
-
 import MainLayout from "../layouts/MainLayout";
 
 function AprioriAnalysis() {
-  const [datasetId, setDatasetId] =
-    useState("");
-
+  const [datasetId, setDatasetId] = useState("");
   const [rules, setRules] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const generateRules = async () => {
-    const res = await API.post(
-      "/apriori/generate",
-      {
-        datasetId,
-        minSupport: 0.02,
-        minConfidence: 0.3,
-        minLift: 1.2
-      }
-    );
+    try {
+      setLoading(true);
 
-    setRules(res.data.rules);
+      const res = await API.post(
+        "/apriori/generate",
+        {
+          datasetId,
+          minSupport: 0.02,
+          minConfidence: 0.3,
+          minLift: 1.2,
+        }
+      );
+
+      setRules(res.data.rules || []);
+    } catch (error) {
+      console.log(error);
+      alert("Failed To Generate Rules");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <MainLayout>
-      <div className="page-container">
-        <h2>Apriori Analysis</h2>
+      <div className="container mt-4">
 
-        <input
-          type="number"
-          className="form-control mb-3"
-          placeholder="Dataset ID"
-          onChange={(e) =>
-            setDatasetId(e.target.value)
-          }
-        />
+        <h2 className="mb-4">
+          Apriori Analysis & Association Rules
+        </h2>
 
-        <button
-          className="btn btn-success"
-          onClick={generateRules}
-        >
-          Generate Rules
-        </button>
+        <div className="card p-4 shadow">
 
-        <table className="table table-dark mt-4">
-          <thead>
-            <tr>
-              <th>Antecedent</th>
-              <th>Consequent</th>
-              <th>Support</th>
-              <th>Confidence</th>
-              <th>Lift</th>
-            </tr>
-          </thead>
+          <label>Dataset ID</label>
 
-          <tbody>
-            {rules.map((rule, index) => (
-              <tr key={index}>
-                <td>{rule.antecedent}</td>
+          <input
+            type="number"
+            className="form-control mb-3"
+            value={datasetId}
+            onChange={(e) =>
+              setDatasetId(e.target.value)
+            }
+            placeholder="Enter Dataset ID"
+          />
 
-                <td>{rule.consequent}</td>
+          <button
+            className="btn btn-success"
+            onClick={generateRules}
+            disabled={loading}
+          >
+            {loading
+              ? "Generating..."
+              : "Generate Rules"}
+          </button>
 
-                <td>{rule.support}</td>
+        </div>
 
-                <td>{rule.confidence}</td>
+        {rules.length > 0 && (
 
-                <td>{rule.lift}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          <div className="mt-4">
+
+            <div className="alert alert-info">
+
+              <h5>
+                Total Rules Generated:
+                {rules.length}
+              </h5>
+
+            </div>
+
+            <table className="table table-bordered table-striped">
+
+              <thead className="table-dark">
+                <tr>
+                  <th>#</th>
+                  <th>Rule</th>
+                  <th>Support</th>
+                  <th>Confidence</th>
+                  <th>Lift</th>
+                  <th>Recommendation</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                {rules.map((rule, index) => (
+
+                  <tr key={index}>
+
+                    <td>{index + 1}</td>
+
+                    <td>
+                      <b>
+                        {rule.antecedent}
+                      </b>
+
+                      {" → "}
+
+                      <b>
+                        {rule.consequent}
+                      </b>
+                    </td>
+
+                    <td>
+                      {(
+                        rule.support * 100
+                      ).toFixed(2)}
+                      %
+                    </td>
+
+                    <td>
+                      {(
+                        rule.confidence *
+                        100
+                      ).toFixed(2)}
+                      %
+                    </td>
+
+                    <td>
+                      {rule.lift.toFixed(2)}
+                    </td>
+
+                    <td>
+                      Customers who buy
+                      <b>
+                        {" "}
+                        {rule.antecedent}
+                      </b>
+                      are likely to buy
+                      <b>
+                        {" "}
+                        {rule.consequent}
+                      </b>
+                    </td>
+
+                  </tr>
+
+                ))}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        )}
+
       </div>
     </MainLayout>
   );
